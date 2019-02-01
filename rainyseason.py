@@ -1,4 +1,7 @@
 #!/usr/bin/python
+"""
+Main program that calculates the characteristics of the rainy and dry seasons
+"""
 import sys
 import numpy as np
 from scipy.stats import norm
