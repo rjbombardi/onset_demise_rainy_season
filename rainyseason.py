@@ -261,8 +261,7 @@ Removing Feb 29th. This block averages Feb 28 and 29 in leap years.
 """
 id=np.where((month == 2.) & (day == 29.))
 id2=[x-1 for x in id]  # creating a list equal to (id-1) and python is stupid
-prec2=0.5*(prec[id2,:,:]+prec[id,:,:]) 
-prec[id2,:,:]=prec2[0,:,:,:]  #stupid python adds a dimention to the result
+prec[id2[0],:,:]=0.5*(prec[id[0],:,:]+prec[id2[0],:,:])
 prec=np.delete(prec,id,axis=0)
 year=np.delete(year,id,axis=0)
 month=np.delete(month,id,axis=0)
