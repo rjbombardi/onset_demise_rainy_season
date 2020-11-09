@@ -144,13 +144,24 @@ def dates_daily(y0,m0,d0,mtot,noleap):
              if year[dt] % 4 != 0:
                 single_date=single_date+deltad
              if year[dt] % 4 == 0:
-                if month[dt] != 2:
-                   single_date=single_date+deltad
-                if month[dt] == 2:
-                   if day[dt] < 28:
+                if year[dt] % 100 != 0:
+                   if month[dt] != 2:
                       single_date=single_date+deltad
-                   if day[dt] == 28:
-                      single_date=single_date+2*deltad
+                   if month[dt] == 2:
+                      if day[dt] < 28:
+                         single_date=single_date+deltad
+                      if day[dt] == 28:
+                         single_date=single_date+2*deltad
+                if (year[dt] % 100 == 0) & (year[dt] % 400 != 0):
+                   single_date=single_date+deltad
+                if year[dt] % 400 == 0:
+                   if month[dt] != 2:
+                      single_date=single_date+deltad
+                   if month[dt] == 2:
+                      if day[dt] < 28:
+                         single_date=single_date+deltad
+                      if day[dt] == 28:
+                         single_date=single_date+2*deltad
           dt=dt+1
     return day, month, year
 
