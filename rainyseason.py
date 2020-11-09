@@ -83,23 +83,27 @@ missval=prec.min()   # missing value
 #=======================================================================================
 print("Data read.")
 
-def julian(dd,mm,yy):
+def julian(dd,mm,yy,noleap=1):
     """
     Function that calculates julian days [Day of Year] from day,month, and year imput
     Imput:
        yy:     year [integer]
        mm:     month [integer]
        dd:     day [integer]
-    Output:
+       noleap = flag to indicate whether or not leap years should be considered.
+       noleap = 0 --> time searies contain Feb 29
+       noleap = 1 --> time series does not contain Feb 29
+   Output:
        jday:   COrresponding Julian day or Day of Year [1,366]
     Example:
     --------
-      >>> jday = julian(1,1,1980)
+      >>> jday = julian(1,1,1980) # no leap years
+      >>> jday = julian(1,1,1980,0)
     """
-    if yy % 4 != 0 or yy % 100 == 0:
-       mon=[31,28,31,30,31,30,31,31,30,31,30,31]
-    if yy % 4 == 0 and yy % 100 != 0 or yy % 400 == 0:
-       mon=[31,29,31,30,31,30,31,31,30,31,30,31]
+    mon=[31,28,31,30,31,30,31,31,30,31,30,31]
+    if noleap==0:
+       if yy % 4 == 0 and yy % 100 != 0 or yy % 400 == 0:
+          mon=[31,29,31,30,31,30,31,31,30,31,30,31]
     if mm == 1:
        jday=dd
     if mm > 1:
@@ -249,12 +253,6 @@ for nt in range(0,ntot):
 #------------------------------------------------------------------------                 !
 yr0=1979
 day,month,year=dates_daily(yr0,1,1,ntot,0)
-#------------------------------------------------------------------------
-# Function that caclulates juilan days
-#------------------------------------------------------------------------                 !
-jday=np.zeros((ntot))
-for tt in range(0,ntot):
-    jday[tt]=julian(int(day[tt]),int(month[tt]),int(year[tt]))
 
 print('data read')
 print('Formating data...')
@@ -280,6 +278,13 @@ day=np.delete(day,id,axis=0)
 jday=np.delete(jday,id,axis=0)
 ntot=len(year)
 prec[prec<0.]=missval
+
+#------------------------------------------------------------------------
+# Function that caclulates juilan days
+#------------------------------------------------------------------------                 !
+jday=np.zeros((ntot))
+for tt in range(0,ntot):
+    jday[tt]=julian(int(day[tt]),int(month[tt]),int(year[tt]))
 
 #---------------------------------------------------------------------------------------
 """
