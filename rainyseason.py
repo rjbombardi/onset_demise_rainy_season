@@ -275,7 +275,6 @@ prec=np.delete(prec,id,axis=0)
 year=np.delete(year,id,axis=0)
 month=np.delete(month,id,axis=0)
 day=np.delete(day,id,axis=0)
-jday=np.delete(jday,id,axis=0)
 ntot=len(year)
 prec[prec<0.]=missval
 
