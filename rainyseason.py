@@ -209,45 +209,6 @@ def Harmonics(coeafa,coefb,hvar,tseries,nmodes,missval):
 
 #================================= Formatting Data ======================================
 
-
-#------------------------------------------------------------------------
-# Reading precipitation data
-#------------------------------------------------------------------------
-
-# test on grid point it=150; jt=600
-
-# Reading list of files
-pathin='/home/rodrigo/python_programs/'
-pathout='/home/rodrigo/subsets/'
-file1='list.CPC_UNI.txt'
-filein=pathin+file1
-
-files = []
-fp = open(filein,'r')
-for line in fp:
-    line = line.strip()
-    files.append(line)
-
-fp.close()
-
-tot=365
-ntot=len(files)
-nlat=360
-nlon=720
-
-lats=np.arange(-90,90,0.5)
-lons=np.arange(0.,360.,0.5)
-
-print('reading data...')
-prec=np.zeros((ntot,nlat,nlon))
-for nt in range(0,ntot):
-    fp = open(files[nt], 'rb')
-    a = np.fromfile(files[nt], dtype='f4')
-    tmp=a[0:259200]
-    tmp=tmp.reshape(nlat,nlon)
-    fp.close()
-    prec[nt,:,:]=0.1*tmp[:,:]   # original dataset in 0.1mm. A value of 62 = 62 0.1mm = 6.2mm
-
 #------------------------------------------------------------------------
 # Creating vectors of dates
 #------------------------------------------------------------------------                 !
@@ -263,7 +224,6 @@ print('Formating data...')
 missval=-999.000   # missing value
 #================================= Formatting Data ======================================
 print("Formatting Data...")
-
 
 """
 Removing Feb 29th. This block averages Feb 28 and 29 in leap years. 
@@ -332,11 +292,6 @@ This block will calculate the mean annual cycle for the whole time series. It wi
 to be adapted if the period of interest is only a portion of the total time series.
 For example, climatologies of a 30 year period of reference: 1981-2010.
 """
-
-""" calculating Julian days """
-jday=np.zeros((len(prec[:,0,0])))
-for tt in range(0,ntot):
-    jday[tt]=julian(int(day[tt]),int(month[tt]),int(year[tt]))
 
 """ calculating the mean annual cycle for each grid point """
 cycle=np.zeros((tot,nlat,nlon))
@@ -652,22 +607,6 @@ for it in range(0,nlat):
                        demise_month[outl,it,jt]=0.
                        demise_year[outl,it,jt]=0.
 
-
-
-# Rearranging years to account for retrospective calculation of demises
-for it in range(0,nlat):
-    for jt in range(0,nlon):
-        if rm[it,jt] > 0.:
-           if demise_year[1,it,jt] == float(yr0) or demise_year[2,it,jt] == float(yr0+1):
-              demise_year[0:nyrs-1,it,jt]=demise_year[1:nyrs,it,jt]
-              demise_year[nyrs-1,it,jt]=missval
-              demise_month[0:nyrs-1,it,jt]=demise_month[1:nyrs,it,jt]
-              demise_month[nyrs-1,it,jt]=missval
-              demise_day[0:nyrs-1,it,jt]=demise_day[1:nyrs,it,jt]
-              demise_day[nyrs-1,it,jt]=missval
-              demise_jday[0:nyrs-1,it,jt]=demise_jday[1:nyrs,it,jt]
-              demise_jday[nyrs-1,it,jt]=missval
-
 #------------------------------------------------------------------------
 #    Masking regions where > 33% of the data are missing values 
 #------------------------------------------------------------------------
@@ -681,10 +620,6 @@ for it in range(0,nlat):
               onset_day[:,it,jt]=0.
               onset_month[:,it,jt]=0.
               onset_year[:,it,jt]=0.
-
-for it in range(0,nlat):
-    for jt in range(0,nlon):
-        if rm[it,jt] > 0.:
            id=np.where(demise_jday[:,it,jt] == 0.)
            if len(id[0])/float(nyrs) > 0.33:
               rm[it,jt]=0.
@@ -692,6 +627,17 @@ for it in range(0,nlat):
               demise_day[:,it,jt]=0.
               demise_month[:,it,jt]=0.
               demise_year[:,it,jt]=0.
+# Rearranging years to account for retrospective calculation of demises
+           if demise_year[1,it,jt] == float(yr0) or demise_year[2,it,jt] == float(yr0+1):
+              demise_year[0:nyrs-1,it,jt]=demise_year[1:nyrs,it,jt]
+              demise_year[nyrs-1,it,jt]=0.
+              demise_month[0:nyrs-1,it,jt]=demise_month[1:nyrs,it,jt]
+              demise_month[nyrs-1,it,jt]=0.
+              demise_day[0:nyrs-1,it,jt]=demise_day[1:nyrs,it,jt]
+              demise_day[nyrs-1,it,jt]=0.
+              demise_jday[0:nyrs-1,it,jt]=demise_jday[1:nyrs,it,jt]
+              demise_jday[nyrs-1,it,jt]=0.
+
 
 #=======================================================================================
 """
