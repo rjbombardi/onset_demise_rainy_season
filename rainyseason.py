@@ -506,12 +506,11 @@ for it in range(0,nlat):
                        onset_day[outl,it,jt]=0.
                        onset_month[outl,it,jt]=0.
                        onset_year[outl,it,jt]=0.
-
-print('Calculating the onset of the dry season...')
-#----- Calculating the stats of the onset date of the dry season
-for it in range(0,nlat):
-    print(it+1,' of ',nlat)
-    for jt in range(0,nlon):
+# print('Calculating the onset of the dry season...')
+##----- Calculating the stats of the onset date of the dry season
+#for it in range(0,nlat):
+#    print(it+1,' of ',nlat)
+#    for jt in range(0,nlon):
         if rm[it,jt] > 0.:
            sdate=startwet[it,jt] #It has to be wet because we are calculating it retrospectively
            djd[:]=0
@@ -704,33 +703,6 @@ wet and dry seasons
                            ned=int((onset_year[yt+1,it,jt]-yr0)*tot+onset_jday[yt+1,it,jt]-1)
                            durdry[yt,it,jt]=float(ned-beg)
                            totdry[yt,it,jt]=np.sum(prec[beg:ned,it,jt])
-# Rearranging years to match NetCDF file better
-           if onset_year[0,it,jt] > float(yr0):
-              onset_year[1:nyrs,it,jt]=onset_year[0:nyrs-1,it,jt]
-              onset_year[0,it,jt]=missval
-              onset_month[1:nyrs,it,jt]=onset_month[0:nyrs-1,it,jt]
-              onset_month[0,it,jt]=missval
-              onset_day[1:nyrs,it,jt]=onset_day[0:nyrs-1,it,jt]
-              onset_day[0,it,jt]=missval
-              onset_jday[1:nyrs,it,jt]=onset_jday[0:nyrs-1,it,jt]
-              onset_jday[0,it,jt]=missval
-              totwet[1:nyrs,it,jt]=totwet[0:nyrs-1,it,jt]
-              totwet[0,it,jt]=missval
-              durwet[1:nyrs,it,jt]=durwet[0:nyrs-1,it,jt]
-              durwet[0,it,jt]=missval
-           if demise_year[0,it,jt] > float(yr0):
-              demise_year[1:nyrs,it,jt]=demise_year[0:nyrs-1,it,jt]
-              demise_year[0,it,jt]=missval
-              demise_month[1:nyrs,it,jt]=demise_month[0:nyrs-1,it,jt]
-              demise_month[0,it,jt]=missval
-              demise_day[1:nyrs,it,jt]=demise_day[0:nyrs-1,it,jt]
-              demise_day[0,it,jt]=missval
-              demise_jday[1:nyrs,it,jt]=demise_jday[0:nyrs-1,it,jt]
-              demise_jday[0,it,jt]=missval
-              totdry[1:nyrs,it,jt]=totdry[0:nyrs-1,it,jt]
-              totdry[0,it,jt]=missval
-              durdry[1:nyrs,it,jt]=durdry[0:nyrs-1,it,jt]
-              durdry[0,it,jt]=missval
 
 #=======================================================================================
 """
