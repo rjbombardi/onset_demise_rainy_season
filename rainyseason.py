@@ -187,26 +187,25 @@ Output:
    hvar : Array of explained variance of the Nth first harmonics
 """
 def Harmonics(coeafa,coefb,hvar,tseries,nmodes,missval):
-    mtot=len(tseries)
-    time=np.arange(1,mtot+1,1.)
-    newdim=len(tseries[tseries!=missval])  # removing missing data
-    time=time[tseries!=missval]
-    tdata=tseries[tseries!=missval]
-    svar=sum((tdata[:]-np.mean(tdata))**2)/(newdim-1)
+    mtot=len(tseries)               # retrieving the lenght of the time dimension
+    time=np.arange(1,mtot+1,1.)     # Just a an array of increasing numbers
+    tdata=tseries[:]                # Adjusting the mean annual cycle
+    tdata[tseries==missval]=0.      # Padding missing values with zeros just to be safe
+    svar=sum((tdata[:]-np.mean(tdata))**2)/(mtot-1)
     nm=nmodes
     if 2*nm > newdim:
-       nm=newdim/2
+       nm=mtot/2
     coefa=np.zeros((nm))
     coefb=np.zeros((nm))
     hvar=np.zeros((nm))
     for tt in range(0,nm):
-        Ak=np.sum(tdata[:]*np.cos(2.*math.pi*(tt+1)*time[:]/float(newdim)))
-        Bk=np.sum(tdata[:]*np.sin(2.*math.pi*(tt+1)*time[:]/float(newdim)))
-        coefa[tt]=Ak*2./float(newdim)
-        coefb[tt]=Bk*2./float(newdim)
-        hvar[tt]=newdim*(coefa[tt]**2+coefb[tt]**2)/(2.*(newdim-1)*svar)
+        Ak=np.sum(tdata[:]*np.cos(2.*math.pi*(tt+1)*time[:]/float(mtot)))
+        Bk=np.sum(tdata[:]*np.sin(2.*math.pi*(tt+1)*time[:]/float(mtot)))
+        coefa[tt]=Ak*2./float(mtot)
+        coefb[tt]=Bk*2./float(mtot)
+        hvar[tt]=mtot*(coefa[tt]**2+coefb[tt]**2)/(2.*(mtot-1)*svar)
     return coefa,coefb,hvar
-
+  
 #================================= Formatting Data ======================================
 
 #------------------------------------------------------------------------
