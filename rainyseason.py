@@ -193,7 +193,7 @@ def Harmonics(coeafa,coefb,hvar,tseries,nmodes,missval):
     tdata[tseries==missval]=0.      # Padding missing values with zeros just to be safe
     svar=sum((tdata[:]-np.mean(tdata))**2)/(mtot-1)
     nm=nmodes
-    if 2*nm > newdim:
+    if 2*nm > mtot:
        nm=mtot/2
     coefa=np.zeros((nm))
     coefb=np.zeros((nm))
