@@ -62,6 +62,7 @@ the Input variables described above.
 
 dper=25.
 yr0=
+tot=365. # Number of DOY [edit accordingly if working with pentads or any other temporal resolution]
 ntot=
 nlat=
 nlon=
