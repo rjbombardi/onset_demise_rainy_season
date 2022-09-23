@@ -731,11 +731,9 @@ totdry[totdry==0.]=missval
 durdry[durdry==0.]=missval
 durwet[durwet==0.]=missval
 
-#=======================================================================================
-"""
-Saving rainy and wet season characteristics
-"""
-#=======================================================================================
+#========================================================================
+# Saving rainy and wet season characteristics
+#========================================================================
 
 outfile = pathout+"onset.wet.season.CPC_UNI."+str(yrs[0])[0:4]+"-"+str(yrs[nyrs-3])[0:4]+".nc"
 from netCDF4 import Dataset
@@ -745,11 +743,9 @@ rootgrp = Dataset(outfile, "a")
 # Creating dimensions
 lon = rootgrp.createDimension("lon", len(lons[0:nlon]))
 lat = rootgrp.createDimension("lat", len(lats[0:nlat]))
-lev = rootgrp.createDimension("lev", 1)
 time = rootgrp.createDimension("time",nyrs-2)
 #Creating coordinates
 times = rootgrp.createVariable("time","i4",("time",))
-levels = rootgrp.createVariable("lev","i4",("lev",))
 latitudes = rootgrp.createVariable("lat","f8",("lat",))
 longitudes = rootgrp.createVariable("lon","f8",("lon",))
 # Filling coordinates
@@ -759,33 +755,30 @@ longitudes[:]=lons[0:nlon]
 latitudes.units='degrees_north'
 latitudes.long_name='Latitude'
 latitudes[:]=lats[0:nlat]
-levels.units='millibar'
-levels.long_name='Level'
-levels[:]=1000.
 times.long_name='Time'
 times.units='years since '+str(yrs[0])[0:4]+'-01-01 00:00'
 times[:]=dyr[0:nyrs-2]
 # Creating variables 
-var = rootgrp.createVariable("DOY","f4", ("time","lev","lat","lon",),fill_value=missval)
+var = rootgrp.createVariable("DOY","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var.long_name = 'Wet season onset [Day of Year]'
-var[:,0,:,:] = onset_jday[0:nyrs-2,:,:]
+var[:,:,:] = onset_jday[0:nyrs-2,:,:]
 # Creating variables 
-var2 = rootgrp.createVariable("day","f4", ("time","lev","lat","lon",),fill_value=missval)
+var2 = rootgrp.createVariable("day","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var2.long_name = 'Wet season onset [Day of the month]'
-var2[:,0,:,:] = onset_day[0:nyrs-2,:,:]
+var2[:,:,:] = onset_day[0:nyrs-2,:,:]
 # Creating variables 
-var3 = rootgrp.createVariable("month","f4", ("time","lev","lat","lon",),fill_value=missval)
+var3 = rootgrp.createVariable("month","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var3.long_name = 'Wet season onset month'
-var3[:,0,:,:] = onset_month[0:nyrs-2,:,:]
+var3[:,:,:] = onset_month[0:nyrs-2,:,:]
 # Creating variables 
-var4 = rootgrp.createVariable("year","f4", ("time","lev","lat","lon",),fill_value=missval)
+var4 = rootgrp.createVariable("year","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var4.long_name = 'Wet season onset year'
-var4[:,0,:,:] = onset_year[0:nyrs-2,:,:]
-
+var4[:,:,:] = onset_year[0:nyrs-2,:,:]
+rootgrp.close()
 
 #=============
 #  End of wet season/ Start of dry season
@@ -799,11 +792,9 @@ rootgrp = Dataset(outfile, "a")
 # Creating dimensions
 lon = rootgrp.createDimension("lon", len(lons[0:nlon]))
 lat = rootgrp.createDimension("lat", len(lats[0:nlat]))
-lev = rootgrp.createDimension("lev", 1)
 time = rootgrp.createDimension("time",nyrs-2)
 #Creating coordinates
 times = rootgrp.createVariable("time","i4",("time",))
-levels = rootgrp.createVariable("lev","i4",("lev",))
 latitudes = rootgrp.createVariable("lat","f8",("lat",))
 longitudes = rootgrp.createVariable("lon","f8",("lon",))
 # Filling coordinates
@@ -813,38 +804,36 @@ longitudes[:]=lons[0:nlon]
 latitudes.units='degrees_north'
 latitudes.long_name='Latitude'
 latitudes[:]=lats[0:nlat]
-levels.units='millibar'
-levels.long_name='Level'
-levels[:]=1000.
 times.long_name='Time'
 times.units='years since '+str(yrs[0])[0:4]+'-01-01 00:00'
 times[:]=dyr[0:nyrs-2]
 # Creating variables 
-var = rootgrp.createVariable("DOY","f4", ("time","lev","lat","lon",),fill_value=missval)
+var = rootgrp.createVariable("DOY","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var.long_name = 'Wet season demise [Day of Year]'
-var[:,0,:,:] = demise_jday[0:nyrs-2,:,:]
+var[:,:,:] = demise_jday[0:nyrs-2,:,:]
 # Creating variables 
-var2 = rootgrp.createVariable("day","f4", ("time","lev","lat","lon",),fill_value=missval)
+var2 = rootgrp.createVariable("day","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var2.long_name = 'Wet season demise [Day of the month]'
-var2[:,0,:,:] = demise_day[0:nyrs-2,:,:]
+var2[:,:,:] = demise_day[0:nyrs-2,:,:]
 # Creating variables 
-var3 = rootgrp.createVariable("month","f4", ("time","lev","lat","lon",),fill_value=missval)
+var3 = rootgrp.createVariable("month","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var3.long_name = 'Wet season demise month'
-var3[:,0,:,:] = demise_month[0:nyrs-2,:,:]
+var3[:,:,:] = demise_month[0:nyrs-2,:,:]
 # Creating variables 
-var4 = rootgrp.createVariable("year","f4", ("time","lev","lat","lon",),fill_value=missval)
+var4 = rootgrp.createVariable("year","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var4.long_name = 'Wet season demise year'
-var4[:,0,:,:] = demise_year[0:nyrs-2,:,:]
+var4[:,:,:] = demise_year[0:nyrs-2,:,:]
+rootgrp.close()
 
 #=============
 #  Total precipitation and duration
 #=============
 
-outfile = pathout+"total.precip.wet.season.CPC_UNI."+str(yrs[0])[0:4]+"-"+str(yrs[nyrs-2])[0:4]+".nc"
+outfile = pathout+"total.precip.wet.season.CPC_UNI."+str(yrs[0])[0:4]+"-"+str(yrs[nyrs-3])[0:4]+".nc"
 from netCDF4 import Dataset
 rootgrp = Dataset(outfile, "w", format="NETCDF4")
 rootgrp.close()
@@ -852,11 +841,9 @@ rootgrp = Dataset(outfile, "a")
 # Creating dimensions
 lon = rootgrp.createDimension("lon", len(lons[0:nlon]))
 lat = rootgrp.createDimension("lat", len(lats[0:nlat]))
-lev = rootgrp.createDimension("lev", 1)
-time = rootgrp.createDimension("time",nyrs)
+time = rootgrp.createDimension("time",nyrs-2)
 #Creating coordinates
 times = rootgrp.createVariable("time","i4",("time",))
-levels = rootgrp.createVariable("lev","i4",("lev",))
 latitudes = rootgrp.createVariable("lat","f8",("lat",))
 longitudes = rootgrp.createVariable("lon","f8",("lon",))
 # Filling coordinates
@@ -866,19 +853,17 @@ longitudes[:]=lons[0:nlon]
 latitudes.units='degrees_north'
 latitudes.long_name='Latitude'
 latitudes[:]=lats[0:nlat]
-levels.units='millibar'
-levels.long_name='Level'
-levels[:]=1000.
 times.long_name='Time'
 times.units='years since '+str(yrs[0])[0:4]+'-01-01 00:00'
-times[:]=dyr[0:nyrs]
+times[:]=dyr[0:nyrs-2]
 # Creating variables 
-var = rootgrp.createVariable("totwet","f4", ("time","lev","lat","lon",),fill_value=missval)
+var = rootgrp.createVariable("totwet","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var.long_name = 'Total precipiation during the wet season [mm]'
-var[:,0,:,:] = totwet[0:nyrs,:,:]
+var[:,:,:] = totwet[0:nyrs-2,:,:]
+rootgrp.close()
 
-outfile = pathout+"total.precip.dry.season.CPC_UNI."+str(yrs[0])[0:4]+"-"+str(yrs[nyrs-2])[0:4]+".nc"
+outfile = pathout+"total.precip.dry.season.CPC_UNI."+str(yrs[0])[0:4]+"-"+str(yrs[nyrs-3])[0:4]+".nc"
 from netCDF4 import Dataset
 rootgrp = Dataset(outfile, "w", format="NETCDF4")
 rootgrp.close()
@@ -886,11 +871,9 @@ rootgrp = Dataset(outfile, "a")
 # Creating dimensions
 lon = rootgrp.createDimension("lon", len(lons[0:nlon]))
 lat = rootgrp.createDimension("lat", len(lats[0:nlat]))
-lev = rootgrp.createDimension("lev", 1)
-time = rootgrp.createDimension("time",nyrs)
+time = rootgrp.createDimension("time",nyrs-2)
 #Creating coordinates
 times = rootgrp.createVariable("time","i4",("time",))
-levels = rootgrp.createVariable("lev","i4",("lev",))
 latitudes = rootgrp.createVariable("lat","f8",("lat",))
 longitudes = rootgrp.createVariable("lon","f8",("lon",))
 # Filling coordinates
@@ -900,20 +883,17 @@ longitudes[:]=lons[0:nlon]
 latitudes.units='degrees_north'
 latitudes.long_name='Latitude'
 latitudes[:]=lats[0:nlat]
-levels.units='millibar'
-levels.long_name='Level'
-levels[:]=1000.
 times.long_name='Time'
 times.units='years since '+str(yrs[0])[0:4]+'-01-01 00:00'
-times[:]=dyr[0:nyrs]
+times[:]=dyr[0:nyrs-2]
 # Creating variables 
-var = rootgrp.createVariable("totdry","f4", ("time","lev","lat","lon",),fill_value=missval)
+var = rootgrp.createVariable("totdry","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var.long_name = 'Total precipitation during the dry season [mm]'
-var[:,0,:,:] = totdry[0:nyrs,:,:]
+var[:,:,:] = totdry[0:nyrs-2,:,:]
+rootgrp.close()
 
-
-outfile = pathout+"duration.wet.season.CPC_UNI."+str(yrs[0])[0:4]+"-"+str(yrs[nyrs-2])[0:4]+".nc"
+outfile = pathout+"duration.wet.season.CPC_UNI."+str(yrs[0])[0:4]+"-"+str(yrs[nyrs-3])[0:4]+".nc"
 from netCDF4 import Dataset
 rootgrp = Dataset(outfile, "w", format="NETCDF4")
 rootgrp.close()
@@ -921,11 +901,9 @@ rootgrp = Dataset(outfile, "a")
 # Creating dimensions
 lon = rootgrp.createDimension("lon", len(lons[0:nlon]))
 lat = rootgrp.createDimension("lat", len(lats[0:nlat]))
-lev = rootgrp.createDimension("lev", 1)
-time = rootgrp.createDimension("time",nyrs)
+time = rootgrp.createDimension("time",nyrs-2)
 #Creating coordinates
 times = rootgrp.createVariable("time","i4",("time",))
-levels = rootgrp.createVariable("lev","i4",("lev",))
 latitudes = rootgrp.createVariable("lat","f8",("lat",))
 longitudes = rootgrp.createVariable("lon","f8",("lon",))
 # Filling coordinates
@@ -935,20 +913,17 @@ longitudes[:]=lons[0:nlon]
 latitudes.units='degrees_north'
 latitudes.long_name='Latitude'
 latitudes[:]=lats[0:nlat]
-levels.units='millibar'
-levels.long_name='Level'
-levels[:]=1000.
 times.long_name='Time'
 times.units='years since '+str(yrs[0])[0:4]+'-01-01 00:00'
-times[:]=dyr[0:nyrs]
+times[:]=dyr[0:nyrs-2]
 # Creating variables 
-var = rootgrp.createVariable("durwet","f4", ("time","lev","lat","lon",),fill_value=missval)
+var = rootgrp.createVariable("durwet","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var.long_name = 'Duration of the wet weson [day]'
-var[:,0,:,:] = durwet[0:nyrs,:,:]
+var[:,:,:] = durwet[0:nyrs-2,:,:]
+rootgrp.close()
 
-
-outfile = pathout+"duration.dry.season.CPC_UNI."+str(yrs[0])[0:4]+"-"+str(yrs[nyrs-2])[0:4]+".nc"
+outfile = pathout+"duration.dry.season.CPC_UNI."+str(yrs[0])[0:4]+"-"+str(yrs[nyrs-3])[0:4]+".nc"
 from netCDF4 import Dataset
 rootgrp = Dataset(outfile, "w", format="NETCDF4")
 rootgrp.close()
@@ -956,11 +931,9 @@ rootgrp = Dataset(outfile, "a")
 # Creating dimensions
 lon = rootgrp.createDimension("lon", len(lons[0:nlon]))
 lat = rootgrp.createDimension("lat", len(lats[0:nlat]))
-lev = rootgrp.createDimension("lev", 1)
-time = rootgrp.createDimension("time",nyrs)
+time = rootgrp.createDimension("time",nyrs-2)
 #Creating coordinates
 times = rootgrp.createVariable("time","i4",("time",))
-levels = rootgrp.createVariable("lev","i4",("lev",))
 latitudes = rootgrp.createVariable("lat","f8",("lat",))
 longitudes = rootgrp.createVariable("lon","f8",("lon",))
 # Filling coordinates
@@ -970,17 +943,16 @@ longitudes[:]=lons[0:nlon]
 latitudes.units='degrees_north'
 latitudes.long_name='Latitude'
 latitudes[:]=lats[0:nlat]
-levels.units='millibar'
-levels.long_name='Level'
-levels[:]=1000.
 times.long_name='Time'
 times.units='years since '+str(yrs[0])[0:4]+'-01-01 00:00'
-times[:]=dyr[0:nyrs]
+times[:]=dyr[0:nyrs-2]
 # Creating variables 
-var = rootgrp.createVariable("durdry","f4", ("time","lev","lat","lon",),fill_value=missval)
+var = rootgrp.createVariable("durdry","f4", ("time","lat","lon",),fill_value=missval)
 # Filling Variable
 var.long_name = 'Duration of the dry season [day]'
-var[:,0,:,:] = durdry[0:nyrs,:,:]
+var[:,:,:] = durdry[0:nyrs-2,:,:]
+rootgrp.close()
+
 
 #========================================================================
 #                             End of program
